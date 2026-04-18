@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Compatibility Error</title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+
+<style>
+body { font-family: "Segoe UI", Arial, sans-serif; background: #f5f6fa; color: #333; }
+.navbar { background-color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.error-container {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    max-width: 700px;
+    margin: 50px auto;
+    text-align: center;
+}
+.error-container img { max-width: 100px; margin-bottom: 20px; }
+.error-container h1 { font-weight: 600; font-size: 1.8rem; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.error-container p { font-size: 1rem; line-height: 1.6; color: #555; }
+.btn-primary { background-color: #2563eb; border-color: #2563eb; color: #fff; padding: 0.6rem 1.5rem; border-radius: 6px; font-weight: 600; text-decoration: none; display: inline-block; margin-top: 20px; transition: 0.3s; }
+.btn-primary:hover { background-color: #1d4ed8; border-color: #1d4ed8; color: #fff; }
+footer { text-align: center; padding: 1rem; background-color: #f3f4f6; margin-top: 30px; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <span>Online Exam Proctor</span>
+    <a href="{{ url_for('main') }}" class="btn btn-primary">Logout</a>
+</nav>
+
+<div class="error-container">
+    <img id="error" src="{{url_for('static', filename='img/error.png')}}" alt="Error Icon">
+    <h1>
+        <img id="error1" src="{{url_for('static', filename='img/error2.png')}}" alt="">
+        System Compatibility Error
+        <img id="error2" src="{{url_for('static', filename='img/error2.png')}}" alt="">
+    </h1>
+    <p>
+        Sorry, your computer is not compatible with taking the online exam.
+        Please use a computer with a webcam and voice recorder.
+        If you have any questions, please contact the exam administrator.
+    </p>
+    <a href="{{ url_for('main') }}" class="btn btn-primary">Go Back</a>
+</div>
+
+<footer>
+    &copy; 2025 The Online Exam Proctor System
+</footer>
+
+</body>
+</html>

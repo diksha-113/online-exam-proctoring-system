@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Questions - {{ exam.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body { font-family: "Segoe UI", Arial, sans-serif; background: #f5f6fa; }
+        .container { margin-top: 40px; }
+        .header-section { margin-bottom: 30px; }
+        .header-section h2 { margin-bottom: 10px; }
+        .table th, .table td { vertical-align: middle; }
+        .table-hover tbody tr:hover { background: #f1f2f6; }
+        .table-responsive { box-shadow: 0 2px 6px rgba(0,0,0,0.08); border-radius: 10px; background: #fff; padding: 20px; }
+        .btn { box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .table thead th { background-color: #f1f2f6; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header-section">
+            <h2 class="text-dark font-weight-bold">Exam: {{ exam.title }}</h2>
+            <p class="text-muted">{{ exam.description }}</p>
+            <p><strong>Scheduled At:</strong> {{ exam.scheduled_at }}</p>
+            <p><strong>Total Questions:</strong> {{ question_count }}</p>
+            <a href="{{ url_for('professorDashboard') }}" class="btn btn-outline-secondary btn-sm">← Back to Dashboard</a>
+        </div>
+
+        <!-- Questions Table -->
+        <div class="table-responsive mt-3">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question</th>
+                        <th>Type</th>
+                        <th>Options</th>
+                        <th>Correct Answer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if questions %}
+                        {% for q in questions %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td style="max-width:400px; word-wrap:break-word;">{{ q.question_text }}</td>
+                            <td>{{ q.question_type }}</td>
+                            <td class="options">
+                                {% if q.question_type == 'MCQ' %}
+                                    A) {{ q.option_a }}<br>
+                                    B) {{ q.option_b }}<br>
+                                    C) {{ q.option_c }}<br>
+                                    D) {{ q.option_d }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td class="text-center">{{ q.correct_option or '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">No questions available for this exam.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

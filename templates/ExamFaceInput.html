@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam Face Input</title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<!-- Boxicons -->
+<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+
+<style>
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f5f6fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar */
+.navbar-custom {
+    background-color: #343a40;
+    color: #fff;
+}
+.navbar-custom .navbar-brand {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Camera card */
+.camera-card {
+    max-width: 600px;
+    margin: 60px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+/* Video container */
+#video-container {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+    height: 300px; /* reduced height */
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* Video and snapshot */
+#video, #snapshot {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+/* Instructions */
+.instructions {
+    color: #555;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+/* Buttons like students.html */
+.nextButton {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+.nextButton .btn {
+    min-width: 150px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+.nextButton .btn:hover {
+    transform: translateY(-2px);
+}
+
+
+/* Footer */
+footer {
+    margin-top: 50px;
+    padding: 15px 0;
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+  <span class="navbar-brand mb-0 h1">Online Exam Proctor</span>
+</nav>
+
+<div class="camera-card">
+    <h2 class="mb-2">Face Input</h2>
+    <p class="instructions">Align your face in the box below and capture</p>
+
+    <div id="video-container">
+        <video id="video" autoplay playsinline muted></video>
+        <img id="snapshot" src="" alt="Captured Image" style="display:none;">
+    </div>
+
+    <canvas id="canvas" width="640" height="300" style="display:none;"></canvas>
+
+    <div class="nextButton">
+    <button id="captureBtn" class="btn btn-outline-primary btn-hover">Capture Image</button>
+    <button id="retakeBtn" class="btn btn-outline-warning btn-hover" style="display:none;">Retake</button>
+    <a id="confirmBtn" class="btn btn-outline-success btn-hover" href="#" style="display:none;">Confirm & Proceed</a>
+</div>
+
+
+</div>
+
+<footer>
+    <p>&copy; The Online Exam Proctor System</p>
+</footer>
+
+<script>
+// Elements
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const snapshot = document.getElementById('snapshot');
+const captureBtn = document.getElementById('captureBtn');
+const retakeBtn = document.getElementById('retakeBtn');
+const confirmBtn = document.getElementById('confirmBtn');
+
+// Start camera
+async function startCamera() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+        video.srcObject = stream;
+        await video.play();
+    } catch (err) {
+        console.error("Camera error:", err);
+        alert("Cannot access camera. Please allow camera and reload the page.");
+    }
+}
+window.addEventListener('DOMContentLoaded', startCamera);
+
+// Capture image
+captureBtn.addEventListener('click', () => {
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    snapshot.src = canvas.toDataURL('image/jpeg');
+    snapshot.style.display = 'block';
+    video.style.display = 'none';
+    captureBtn.style.display = 'none';
+    retakeBtn.style.display = 'inline-block';
+    confirmBtn.style.display = 'inline-block';
+});
+
+// Retake image
+retakeBtn.addEventListener('click', () => {
+    snapshot.style.display = 'none';
+    video.style.display = 'block';
+    captureBtn.style.display = 'inline-block';
+    retakeBtn.style.display = 'none';
+    confirmBtn.style.display = 'none';
+});
+
+// Confirm and send to server
+confirmBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const dataURL = canvas.toDataURL('image/jpeg');
+    try {
+        const response = await fetch("{{ url_for('faceInput', exam_id=exam_id) }}", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: dataURL })
+        });
+        const result = await response.json();
+        if (response.ok && result.status === 'success') {
+            window.location.href = "{{ url_for('systemCheck', exam_id=exam_id) }}";
+        } else {
+            alert("Failed to save face input. " + (result.message || ""));
+        }
+    } catch (err) {
+        alert("Error: " + err);
+    }
+});
+</script>
+
+</body>
+</html>

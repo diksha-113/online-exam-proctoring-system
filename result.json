@@ -1,0 +1,42 @@
+[
+    {
+        "Id": 1,
+        "Name": "Doremon",
+        "TotalMark": 66,
+        "TrustScore": 100.0,
+        "Status": "Pass",
+        "Date": "2025-09-05",
+        "StId": 1,
+        "Link": "Doremon_001Profile.jpg"
+    },
+    {
+        "Id": 2,
+        "Name": "Diksha",
+        "TotalMark": 46,
+        "TrustScore": 91.0,
+        "Status": "Fail",
+        "Date": "2025-09-09",
+        "StId": 3,
+        "Link": "Diksha_002Profile.jpg"
+    },
+    {
+        "Id": 3,
+        "Name": "oreo",
+        "TotalMark": 46,
+        "TrustScore": 100.0,
+        "Status": "Fail",
+        "Date": "2025-09-13",
+        "StId": 4,
+        "Link": "oreo_003Profile.jpg"
+    },
+    {
+        "Id": 4,
+        "Name": "Alex",
+        "TotalMark": 46,
+        "TrustScore": 100.0,
+        "Status": "Fail",
+        "Date": "2025-09-14",
+        "StId": 1,
+        "Link": "Alex_004Profile.jpg"
+    }
+]

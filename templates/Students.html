@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard</title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<!-- Boxicons -->
+<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+
+<style>
+body { font-family: "Segoe UI", Arial, sans-serif; background: #f5f6fa; }
+#sidebar { width: 240px; background: #2f3640; color: #fff; position: fixed; height: 100%; }
+#sidebar .brand { font-size: 20px; font-weight: bold; padding: 20px; display: flex; align-items: center; }
+#sidebar .brand i { margin-right: 10px; }
+#sidebar ul { list-style: none; padding: 0; margin: 0; }
+#sidebar ul li a { display: block; color: #fff; padding: 15px 20px; text-decoration: none; transition: 0.3s; }
+#sidebar ul li a:hover, #sidebar ul li.active a { background: #404b5a; }
+#content { margin-left: 240px; padding: 30px; }
+.table th, .table td { vertical-align: middle; }
+.table-hover tbody tr:hover { background: #f1f2f6; }
+.modal-content { border-radius: 10px; }
+.btn-hover:hover { transform: translateY(-2px); transition: 0.3s; }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<section id="sidebar">
+    <div class="brand"><i class='bx bxs-graduation'></i> Student Dashboard</div>
+    <ul class="side-menu top">
+        <li class="active"><a href="{{ url_for('studentsDashboard') }}"><i class='bx bxs-book'></i> Exams</a></li>
+        <li><a href="{{ url_for('studentResults') }}"><i class='bx bxs-bar-chart-alt-2'></i> View Results</a></li>
+        <li><a href="{{ url_for('logout') }}"><i class='bx bxs-log-out-circle'></i> Logout</a></li>
+    </ul>
+</section>
+
+<!-- Content -->
+<section id="content">
+<nav class="navbar navbar-light bg-white shadow-sm mb-4">
+    <span class="navbar-brand mb-0 h1">Online Exam Proctor</span>
+</nav>
+
+<main>
+    <!-- Exams Table -->
+    <div class="table-responsive shadow-sm rounded bg-white p-3">
+        <table class="table table-hover mb-0">
+            <thead class="thead-light">
+                <tr>
+                    <th>Exam Title</th>
+                    <th>Description</th>
+                    <th>Scheduled At</th>
+                    <th>Status</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+    {% if exams %}
+        {% for e in exams %}
+        <tr>
+            <td>{{ e['title'] }}</td>
+            <td>{{ e['description'] or '-' }}</td>
+            <td>{{ e['scheduled_at'] }}</td>
+            <td>{{ e['status'] if e['status'] != 'Pending' else '-' }}</td>
+            <td class="text-center">
+                {% if e['status'] == 'Pending' %}
+                    <!-- Link to start exam -->
+                    <a href="{{ url_for('rules', exam_id=e['exam_id']) }}" class="btn btn-sm btn-outline-primary btn-hover">Start Exam</a>
+                {% elif e['status'] == 'Completed' %}
+                    <!-- Link to view result -->
+                     <a href="{{ url_for('studentResults', exam_id=e['exam_id']) }}" class="btn btn-sm btn-outline-success btn-hover">View Result</a>
+                {% else %}
+                    <span class="text-muted">-</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <tr><td colspan="5" class="text-center text-muted py-4">No exams assigned yet</td></tr>
+    {% endif %}
+</tbody>
+
+        </table>
+    </div>
+</main>
+
+</section>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

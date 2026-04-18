@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" title="Confirm Exam Face Input">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirm Exam Face Input</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<style>
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #f0f2f5; /* dashboard background */
+    color: #2f3640;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar */
+nav {
+    background: #1e3799; /* dashboard primary */
+    padding: 12px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+.P-title { font-size: 22px; font-weight: bold; }
+.links { color: #fff; margin-left: 20px; text-decoration: none; font-weight: 500; }
+.links:hover { color: #ffd700; }
+
+/* Main container */
+main { margin-top: 50px; text-align: center; }
+h1 { font-size: 2rem; font-weight: bold; margin-bottom: 30px; color: #1e3799; }
+
+/* Profile image */
+.host-img {
+    display: block;
+    margin: 20px auto;
+    width: 300px;
+    height: 300px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+    object-fit: cover;
+}
+
+/* Checkbox label */
+.export__file-btn {
+    cursor: pointer;
+    padding: 12px 25px;
+    border-radius: 8px;
+    border: 1px solid #44bd32;
+    color: #44bd32;
+    background: #fff;
+    font-weight: 500;
+    transition: 0.3s;
+}
+.export__file-btn:hover { background: #44bd32; color: #fff; }
+
+/* Buttons container */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+/* Retake button */
+.btn-retake {
+    background: #1e3799; /* dashboard primary */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 12px 25px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+    transition: 0.3s;
+}
+.btn-retake:hover { background: #162c80; }
+
+/* Next button */
+.btn-next {
+    color: #fff;
+    background: #6c757d; /* disabled gray */
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 12px 25px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+    transition: 0.3s;
+}
+.btn-next.enabled { background: #44bd32; }
+.btn-next.enabled:hover { background: #3c9e2a; }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Alert box */
+.alert { max-width: 500px; margin: 20px auto; }
+
+/* Footer */
+footer {
+    margin-top: 50px;
+    padding: 15px 0;
+    background: #1e3799;
+    color: #fff;
+    font-weight: 500;
+    box-shadow: 0 -3px 6px rgba(0,0,0,0.1);
+    text-align: center;
+}
+</style>
+</head>
+<body>
+{% if session['username'] %}
+<nav>
+    <div class="P-title">The Online Exam Proctor</div>
+    <div>
+        <a class="links" href="{{ url_for('rules') }}">Rules</a>
+        <a class="links" href="{{ url_for('systemCheck') }}">Requirements</a>
+    </div>
+</nav>
+
+<div class="container">
+<main>
+    <!-- Header / Confirmation -->
+    <section>
+        <h1>Confirm Your Image</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-info">
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+        <div class="export__file mt-3">
+            <input type="checkbox" id="confirm-face">
+            <label for="confirm-face" class="export__file-btn">I Confirm</label>
+        </div>
+    </section>
+
+    <!-- Profile Image -->
+    <section>
+        <img src="{{ url_for('static', filename='Profiles/' + profile) }}" class="host-img" alt="Profile Image">
+    </section>
+
+    <!-- Buttons -->
+    <section>
+        <div class="button-container">
+            <a href="{{ url_for('faceInput') }}" class="btn btn-retake">Retake Image</a>
+            <a href="{{ url_for('systemCheck') }}" class="btn btn-next" id="next-btn" disabled>Next</a>
+        </div>
+    </section>
+</main>
+</div>
+
+<footer>&copy; 2025 The Online Exam Proctor System</footer>
+
+<script>
+const confirmCheckbox = document.getElementById('confirm-face');
+const nextBtn = document.getElementById('next-btn');
+
+confirmCheckbox.addEventListener('change', function() {
+    if (this.checked) {
+        nextBtn.removeAttribute('disabled');
+        nextBtn.classList.add('enabled');
+    } else {
+        nextBtn.setAttribute('disabled', 'disabled');
+        nextBtn.classList.remove('enabled');
+    }
+});
+</script>
+{% else %}
+<div class="container mt-5 text-center">
+    <p>Please <a href="{{ url_for('main') }}">log in</a> to continue.</p>
+</div>
+{% endif %}
+</body>
+</html>

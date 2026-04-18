@@ -1,0 +1,34 @@
+[
+    {
+        "Name": "Prohibited Shorcuts () are detected.",
+        "Time": "0 Counts",
+        "Duration": "",
+        "Mark": 0.0,
+        "Link": "",
+        "RId": 1
+    },
+    {
+        "Name": "Prohibited Shorcuts (Window,Ctrl+C) are detected.",
+        "Time": "6 Counts",
+        "Duration": "",
+        "Mark": 9.0,
+        "Link": "",
+        "RId": 2
+    },
+    {
+        "Name": "Prohibited Shorcuts () are detected.",
+        "Time": "0 Counts",
+        "Duration": "",
+        "Mark": 0.0,
+        "Link": "",
+        "RId": 3
+    },
+    {
+        "Name": "Prohibited Shorcuts () are detected.",
+        "Time": "0 Counts",
+        "Duration": "",
+        "Mark": 0.0,
+        "Link": "",
+        "RId": 4
+    }
+]

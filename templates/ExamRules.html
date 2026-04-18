@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="{{url_for('static', filename='css/description.css')}}">
+  <script src="https://unpkg.com/scrollreveal"></script>  
+
+  <title>Exam Rules and Regulations</title>
+
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-color: #f5f6fa;
+      color: #2f3640;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Navbar */
+    nav {
+      background-color: #2f3640;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+    nav .P-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    nav .links {
+      color: #fff;
+      margin-left: 20px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    nav .links:hover {
+      color: #44bd32;
+    }
+
+    /* Quote Section */
+    #section-citação {
+      text-align: center;
+      padding: 60px 20px 40px 20px;
+    }
+    .quote {
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #1e3799;
+      margin-bottom: 15px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .author {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    /* Combined Rules & Environment Section */
+    #section-rules {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
+    .section-header {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1e3799;
+      text-align: center;
+      margin-bottom: 40px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Cards for Rules */
+    .rules-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      justify-content: center;
+      margin-bottom: 50px;
+    }
+    .rules-cards .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      padding: 25px 20px;
+      width: 280px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .rules-cards .card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+    .rules-cards img {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 15px;
+    }
+    .rules-cards p {
+      font-size: 1rem;
+      color: #2f3640;
+      line-height: 1.5;
+    }
+
+    /* Environment Setup List */
+    .environment {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      padding: 35px 25px;
+    }
+    .environment h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1e3799;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+    .environment ul {
+      padding-left: 25px;
+      color: #2f3640;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    .environment li {
+      margin-bottom: 12px;
+    }
+
+    /* Next Button */
+    .section-button {
+      text-align: center;
+      margin: 50px 0 80px 0;
+    }
+    .nextButton .next {
+      text-decoration: none;
+      background-color: #44bd32;
+      color: #fff;
+      padding: 12px 30px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+    .nextButton .next:hover {
+      background-color: #3c9e2a;
+      transform: translateY(-3px);
+    }
+
+    /* Footer */
+    footer {
+      background: #2f3640;
+      color: #fff;
+      text-align: center;
+      padding: 18px 0;
+      margin-top: 60px;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .rules-cards {
+        gap: 20px;
+      }
+      .rules-cards .card {
+        width: 90%;
+      }
+      .environment {
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <!-- Navbar -->
+    <nav>
+      <p class="P-title">The Online Exam Proctor</p>
+      <div>
+        <a class="links" href="#section-rules">Rules & Environment</a>
+      </div>
+    </nav>
+
+    <!-- Quote Section -->
+    <section id="section-citação">
+      <div class="container1">
+        <p class="quote">“As students take the test, System monitors their camera, mic, and the screen they are looking at.”</p>
+        <p class="author">– Online Exam Proctor System -</p>
+      </div>
+    </section>
+
+    <!-- Combined Rules & Environment Section -->
+    <section id="section-rules">
+      <h2 class="section-header">Rules & Test Environment</h2>
+
+      <!-- Rules Cards -->
+      <div class="rules-cards">
+        <div class="card">
+          <img src="{{url_for('static', filename='img/101391-online-test_zu1cw4.gif')}}" alt="image">
+          <p>Monitors your camera and microphone during the exam. Grant permissions when prompted.</p>
+        </div>
+        <div class="card">
+          <img src="{{url_for('static', filename='img/Not-detect-face.png')}}" alt="image">
+          <p>If the camera doesn't detect your face, it is marked as a violation.</p>
+        </div>
+        <div class="card">
+          <img src="{{url_for('static', filename='img/Detect-face.png')}}" alt="image">
+          <p>Ensure the camera can clearly focus on your face during the exam.</p>
+        </div>
+        <div class="card">
+          <img src="{{url_for('static', filename='img/Take-photo.png')}}" alt="image">
+          <p>Once your face is detected, the system captures the first photo.</p>
+        </div>
+        <div class="card">
+          <img src="{{url_for('static', filename='img/Detect-two-persons.png')}}" alt="image">
+          <p>Only you should be in front of the camera. Keep background clean.</p>
+        </div>
+        <div class="card">
+          <img src="{{url_for('static', filename='img/Talking.png')}}" alt="image">
+          <p>Take the exam in a quiet environment. Any detected sound is recorded.</p>
+        </div>
+      </div>
+
+      <!-- Environment Setup -->
+      <div class="environment">
+        <h2>Test Environment Setup</h2>
+        <ul>
+          <li>Sit at a clean desk or table.</li>
+          <li>Take the exam in the same room scanned during proctoring setup.</li>
+          <li>The room must be quiet. No music or TV allowed.</li>
+          <li>No other person should enter the room during the exam.</li>
+          <li>Do not have books, papers, pens, calculators, or phones unless specifically allowed.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Next Button -->
+    <section class="section-button">
+      <div class="nextButton">
+        <a href="{{ url_for('faceInput', exam_id=exam_id) }}" class="next">Next &raquo;</a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      &copy; The Online Exam Proctor System
+    </footer>
+  </main>
+</body>
+</html>

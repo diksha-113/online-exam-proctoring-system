@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/all.min.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <img class="wave" src="{{ url_for('static', filename='img/wave.png') }}">
+    <div class="container">
+        <div class="img">
+            <img src="{{ url_for('static', filename='img/bg.png') }}">
+        </div>
+        <div class="login-content">
+            <form action="{{ url_for('register') }}" method="post">
+                <img src="{{ url_for('static', filename='img/avatar.svg') }}">
+                <h2 class="title">Register</h2>
+
+                <!-- Username -->
+                <div class="input-div">
+                    <label>Username</label>
+                    <input type="text" name="username" required>
+                </div>
+
+                <!-- Email -->
+                <div class="input-div">
+                    <label>Email</label>
+                    <input type="email" name="email" required>
+                </div>
+
+                <!-- Password -->
+                <div class="input-div">
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="input-div">
+                    <label>Confirm Password</label>
+                    <input type="password" name="confirm_password" required>
+                </div>
+
+                <!-- Role Selection -->
+                <div class="input-div">
+                    <label>Select Role</label>
+                    <select name="role" required>
+                        <option value="" disabled selected>-- Select Role --</option>
+                        <option value="STUDENT">Student</option>
+                        <option value="PROFESSOR">Professor</option>
+                        <option value="ADMIN">Admin</option>
+                    </select>
+                </div>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <h6 class="error">{{ message }}</h6>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <input type="submit" class="btn" value="Register">
+                <p class="login-link">Already have an account? <a href="{{ url_for('main') }}">Login</a></p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

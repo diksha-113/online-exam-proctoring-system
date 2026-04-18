@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Question</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/TrStudent.css') }}">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('professorDashboard') }}">Professor Dashboard</a>
+        <div class="ml-auto">
+            <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">
+                <i class='bx bxs-log-out-circle'></i> Logout
+            </a>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="container mt-5">
+        <h2>Edit Question</h2>
+        <div class="card mt-4">
+            <div class="card-body">
+                <form action="{{ url_for('editQuestion', question_id=question['id']) }}" method="POST">
+                    
+                    <!-- Exam Selection Dropdown -->
+                    <div class="form-group">
+                        <label for="exam_id">Select Exam:</label>
+                        <select class="form-control" name="exam_id" id="exam_id" required>
+                            {% for exam in exams %}
+                                <option value="{{ exam['id'] }}" {% if exam['id'] == question['exam_id'] %}selected{% endif %}>
+                                    {{ exam['exam_name'] }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="question_text">Question:</label>
+                        <textarea class="form-control" name="question_text" id="question_text" rows="4" required>{{ question['question_text'] }}</textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="option_a">Option A:</label>
+                            <input type="text" class="form-control" name="option_a" id="option_a" value="{{ question['option_a'] }}" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="option_b">Option B:</label>
+                            <input type="text" class="form-control" name="option_b" id="option_b" value="{{ question['option_b'] }}" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="option_c">Option C:</label>
+                            <input type="text" class="form-control" name="option_c" id="option_c" value="{{ question['option_c'] }}" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="option_d">Option D:</label>
+                            <input type="text" class="form-control" name="option_d" id="option_d" value="{{ question['option_d'] }}" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correct_option">Correct Option:</label>
+                        <select class="form-control" name="correct_option" id="correct_option" required>
+                            <option value="A" {% if question['correct_option'] == 'A' %}selected{% endif %}>A</option>
+                            <option value="B" {% if question['correct_option'] == 'B' %}selected{% endif %}>B</option>
+                            <option value="C" {% if question['correct_option'] == 'C' %}selected{% endif %}>C</option>
+                            <option value="D" {% if question['correct_option'] == 'D' %}selected{% endif %}>D</option>
+                        </select>
+                    </div>
+
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-success">Update Question</button>
+                        <a href="{{ url_for('professorDashboard') }}" class="btn btn-secondary">Cancel</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

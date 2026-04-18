@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Result - Pass</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Congratulations.css') }}">
+</head>
+<body style="background-color: #e2e2e2;">
+
+<nav>
+    <div class="left-links">
+        <p class="P-title">The Online Exam Proctor</p>
+    </div>
+    <div class="right-links">
+        <a class="links" href="{{ url_for('main') }}">Logout</a>
+    </div>
+</nav>
+
+<section>
+    <span class="overlay"></span>
+    <div class="modal-box">
+        <img src="{{ url_for('static', filename='img/reward.png') }}" alt="Pass Icon" width="70" height="70">
+        <h2>Congratulations!</h2>
+        <ul>
+            <li>Name: {{ result_status['exam_name'] }}</li>
+            <li>Test Score: {{ result_status['score'] }}%</li>
+            <li>Exam Status: {{ result_status['exam_status'] }}</li>
+            <li>Date: {{ result_status['date'] }}</li>
+        </ul>
+    </div>
+</section>
+
+
+<footer>
+    <div class="container8">
+        <p class="box-footer1">&copy; The Online Exam Proctor System</p>
+    </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/confetti.js') }}"></script>
+<script>
+const startConfetti = () => confetti.start();
+const stopConfetti = () => confetti.stop();
+
+window.onload = () => {
+    const section = document.querySelector("section"),
+          overlay = document.querySelector(".overlay");
+
+    section.classList.add("active");
+    startConfetti();
+    setTimeout(stopConfetti, 3000);
+
+    overlay.addEventListener("click", () => section.classList.remove("active"));
+};
+</script>
+
+</body>
+</html>

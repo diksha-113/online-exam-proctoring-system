@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam Result Details</title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<!-- Boxicons -->
+<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+
+<style>
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f8f9fa;
+    margin: 0;
+}
+
+#sidebar {
+    width: 200px;
+    background: #343a40;
+    color: #fff;
+    position: fixed;
+    height: 100%;
+}
+#sidebar .brand {
+    font-size: 18px;
+    font-weight: 600;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+#sidebar .brand i { margin-right: 8px; }
+#sidebar ul { list-style: none; padding: 0; margin: 0; }
+#sidebar ul li a {
+    display: block;
+    color: #fff;
+    padding: 12px 20px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+#sidebar ul li a:hover, #sidebar ul li.active a { background: #495057; border-radius: 6px; }
+
+#content {
+    margin-left: 200px;
+    padding: 30px;
+}
+
+.navbar {
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+    border-radius: 6px;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.table thead {
+    background: #343a40;
+    color: #fff;
+}
+
+.badge-light-green {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.badge-light-red {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.student-info img {
+    border-radius: 50%;
+    object-fit: cover;
+}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<section id="sidebar">
+    <div class="brand"><i class='bx bxs-book'></i> Professor</div>
+    <ul class="side-menu top">
+        <li><a href="{{ url_for('professorDashboard') }}"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
+        <li class="active"><a href="{{ url_for('viewResults') }}"><i class='bx bxs-graduation'></i> Results</a></li>
+        <li><a href="{{ url_for('logout') }}"><i class='bx bxs-log-out-circle'></i> Logout</a></li>
+    </ul>
+</section>
+
+<!-- Content -->
+<section id="content">
+<nav class="navbar navbar-light">
+    <span class="navbar-brand mb-0 h5">Online Exam Proctor</span>
+</nav>
+
+<main>
+    <!-- Student Info -->
+    <div class="d-flex align-items-center student-info bg-white p-3 shadow-sm rounded">
+        <img src="{{ url_for('static', filename=student.image_path) }}" width="90" height="90" alt="Student">
+        <div class="ml-3">
+            <h5>{{ student.username }}</h5>
+            <p class="mb-0 text-muted">ID: {{ student.id }}</p>
+            <p class="mb-0 text-muted">Email: {{ student.email }}</p>
+            <p class="mb-0 text-muted">Exam: {{ exam.exam_title }}</p>
+            <p class="mb-0 text-muted">Date: {{ exam.date }}</p>
+        </div>
+    </div>
+
+    <!-- Score Cards -->
+    <div class="row text-center my-4">
+        <div class="col-md-4 mb-2">
+            <div class="card p-3">
+                <h6>Total Score</h6>
+                <h4>{{ result.get('score', 0) }}</h4>
+            </div>
+        </div>
+        <div class="col-md-4 mb-2">
+            <div class="card p-3">
+                <h6>Trust Score</h6>
+                {% set trust = result.get('trust_score', 0) %}
+                {% if trust >= 80 %}
+                    <span class="badge badge-light-green p-2">{{ trust }}</span>
+                {% else %}
+                    <span class="badge badge-light-red p-2">{{ trust }}</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-4 mb-2">
+            <div class="card p-3">
+                <h6>Violations</h6>
+                {% set violations = result.get('violations', 0) %}
+                {% if violations == 0 %}
+                    <span class="badge badge-light-green p-2">{{ violations }}</span>
+                {% else %}
+                    <span class="badge badge-light-red p-2">{{ violations }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Question-wise Answers -->
+    <div class="card p-3">
+        <h6 class="mb-3">Question-wise Answers</h6>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question</th>
+                        <th>Student Answer</th>
+                        <th>Correct Answer</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for q in questions %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ q.question_text }}</td>
+                        <td>{{ q.student_answer }}</td>
+                        <td>{{ q.correct_answer }}</td>
+                        <td>
+    {% if q.student_answer == '-' %}
+        <span class="badge badge-secondary">Not Answered</span>
+    {% elif q.student_answer == q.correct_answer %}
+        <span class="badge badge-light-green">Correct</span>
+    {% else %}
+        <span class="badge badge-light-red">Wrong</span>
+    {% endif %}
+</td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Violations -->
+    {% if violation_details %}
+    <div class="card p-3 mt-3">
+        <h6 class="mb-3">Violations</h6>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Type</th>
+                        <th>Time</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for v in violation_details %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ v.type }}</td>
+                        <td>{{ v.time }}</td>
+                        <td>{{ v.notes or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="text-right mt-3">
+        <a href="{{ url_for('viewResults') }}" class="btn btn-outline-secondary">Back to Results</a>
+    </div>
+</main>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>
